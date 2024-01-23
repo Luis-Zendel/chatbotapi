@@ -28,14 +28,14 @@ def get_conversation():
     if request.method == 'POST':
         body = request.json
         print(body.get('name'))
-        content = "Hola"
+        content = body.get('name')
         messages.append({"role": "user", "content": content})
         response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
         response_content = response.choices[0].message.content
         messages.append({"role": "assistant", "content": response_content})
         print(f"[bold green]> [/bold green] [green]{response_content}[/green]")
 
-        return jsonify(response2)
+        return jsonify(response_content)
     if request.method == 'GET':
         return jsonify(response2)
 

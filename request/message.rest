@@ -2,6 +2,6 @@ POST http://127.0.0.1:5000/api/nutrition/chatbot HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Hola",
+    "name": "Hola, soy roberto y me gustaría que me enseñes cuales son los habitos más imporntates para ser una persona exitosa",
     "time": "Wed, 21 Oct 2015 18:27:50 GMT"
 }
