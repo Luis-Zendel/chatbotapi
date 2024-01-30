@@ -34,11 +34,10 @@ naturales.
 
 Siempre es recomendable consultar a un profesional de la salud o un dietista antes de hacer cambios drásticos en tu dieta"""
 
-
-def separar_horario(plan_alimenticio, horario):
+def separar_horario(plan_alimenticio, horario, siguiente_horario):
     # Encontrar el índice del horario en el plan alimenticio
     indice_horario = plan_alimenticio.find(horario)
-
+    print("Se encontro indice horario", indice_horario)
     # Si el horario no se encuentra, retornar None
     if indice_horario == -1:
         return None
@@ -47,28 +46,38 @@ def separar_horario(plan_alimenticio, horario):
     inicio_contenido = plan_alimenticio.find('\n', indice_horario) + 1
 
     # Encontrar el final del contenido del horario (inicio del siguiente horario o el final de la cadena)
-    siguiente_horario = ["Media mañana:", "Almuerzo:", "Media tarde:", "Cena:", "Antes de dormir:"]
-    fin_contenido = min(plan_alimenticio.find(hor, inicio_contenido) if hor != -1 else len(plan_alimenticio) for hor in siguiente_horario)
 
+    fin_contenido = plan_alimenticio.find(siguiente_horario) 
+    print("Fin de contenido ", fin_contenido)
     # Extraer el contenido del horario
-    contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
+    if siguiente_horario != "":
+        contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
+    else:
+        contenido_horario = plan_alimenticio[inicio_contenido:].strip()
 
     return contenido_horario
 
 # Ejemplos de cómo utilizar la función
-desayuno = separar_horario(var, "Desayuno:")
-media_manana = separar_horario(var, "Media mañana:")
-almuerzo = separar_horario(var, "Almuerzo:")
-media_tarde = separar_horario(var, "Media tarde:")
-cena = separar_horario(var, "Cena:")
-antes_de_dormir = separar_horario(var, "Antes de dormir:")
+desayuno = separar_horario(var, "Desayuno:", "Media mañana:")
+media_manana = separar_horario(var, "Media mañana:",  "Almuerzo:")
+almuerzo = separar_horario(var, "Almuerzo:", "Media tarde:")
+media_tarde = separar_horario(var, "Media tarde:",  "Cena:")
+cena = separar_horario(var, "Cena:", "Antes de dormir:")
+antes_de_dormir = separar_horario(var, "Antes de dormir:", "")
 
 # Imprimir los resultados
 print("Desayuno:\n", desayuno)
+print("______________________________-")
 print("\nMedia mañana:\n", media_manana)
+print("______________________________-")
 print("\nAlmuerzo:\n", almuerzo)
+print("______________________________-")
 print("\nMedia tarde:\n", media_tarde)
+print("______________________________-")
 print("\nCena:\n", cena)
+print("______________________________-")
 print("\nAntes de dormir:\n", antes_de_dormir)
+print("______________________________-")
+
 
 
