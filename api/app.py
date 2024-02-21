@@ -9,6 +9,7 @@ import db
 import algorithm
 import os
 from config import config
+from datetime import datetime
 
 
 """
@@ -135,7 +136,7 @@ def generateDiet():
                 'email': email,
                 'diet': response_diet,
                 'date': 'test',
-                'prompt': prompt
+                'prompt': prompt,
             }
             db.diet_collection.insert_one(infoAlmacenar).inserted_id
 
@@ -147,22 +148,22 @@ def saveComment():
         data = request.json
         email = data.get('email') 
         getDocumentsComment = db.comment_collection.find({"email" : email})
-        getDocumentsSize = len(list(response))
+        getDocumentsSize = len(list(getDocumentsComment))
         print("respuesta: " )
         print( getDocumentsSize)
         if getDocumentsSize > 2:
             print("No fue posible almacenar comentario para  " + email)
-            responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
+            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "response" : ""}
             response = app.response_class(
                 response=json.dumps(responsemessage),
-                status=201,
+                status=200,
                 mimetype='application/json'
             )
             return response
         else: 
             print("Proceso para almacenar documento ")
             comment = data.get('comment')
-            responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
+            responsemessage = {"message": "Recibimos su comentario, muchas gracias por escribirnos", "response" : ""}
             documentToInsert = {"email": email, "comment": comment}
             db.comment_collection.insert_one({documentToInsert}).inserted_id
             response = app.response_class(
@@ -171,6 +172,25 @@ def saveComment():
                 mimetype='application/json'
             )
             return response
+        
+@app.route('api/get/comment', methods=['POST'])
+def getComments():
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('email') 
+        getDocumentsComment = db.comment_collection.find({"email" : email})
+        getDocumentsSize = len(list(getDocumentsComment))
+        print("respuesta: " )
+        print( getDocumentsSize)
+        if getDocumentsSize > 2:
+            print("No fue posible almacenar comentario para  " + email)
+            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "response" : getDocumentsComment}
+            response = app.response_class(
+                response=json.dumps(responsemessage),
+                status=200,
+                mimetype='application/json'
+            )
+            return response    
 
             
 
