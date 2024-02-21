@@ -91,8 +91,9 @@ def generateDiet():
         data = request.json
         email = data.get('email') 
         existDiet = db.diet_collection.find_one({"email": email})
+        print(existDiet)
         if existDiet:
-            print("No es posible generar una dieta ")
+            print("No es posible generar una dieta " + email)
             responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
             response = app.response_class(
                 response=json.dumps(responsemessage),
@@ -139,6 +140,38 @@ def generateDiet():
             db.diet_collection.insert_one(infoAlmacenar).inserted_id
 
             return response
+
+@app.route('/api/save/comment', methods=['POST'])
+def saveComment():
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('email') 
+        getDocumentsComment = db.comment_collection.find({"email" : email})
+        getDocumentsSize = len(list(response))
+        print("respuesta: " )
+        print( getDocumentsSize)
+        if getDocumentsSize > 2:
+            print("No fue posible almacenar comentario para  " + email)
+            responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
+            response = app.response_class(
+                response=json.dumps(responsemessage),
+                status=201,
+                mimetype='application/json'
+            )
+            return response
+        else: 
+            print("Proceso para almacenar documento ")
+            comment = data.get('comment')
+            responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
+            documentToInsert = {"email": email, "comment": comment}
+            db.comment_collection.insert_one({documentToInsert}).inserted_id
+            response = app.response_class(
+                response=json.dumps(responsemessage),
+                status=201,
+                mimetype='application/json'
+            )
+            return response
+
             
 
 
