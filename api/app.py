@@ -10,7 +10,7 @@ import algorithm
 import os
 from config import config
 from datetime import datetime
-
+import jsonfun
 
 """
 -Definir rutas de usarios 
@@ -25,7 +25,6 @@ KEY = os.getenv('URL_OPENAI_KEY')
 context = {"role": "system","content": "Eres un asistente muy útil."}
 messages = [context]
 clientOpenAI = OpenAI(api_key= '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') 
-
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -144,19 +143,26 @@ def generateDiet():
 
             return response
 
-@app.route('/api/get/diet', methods=['POST'])
+#GET DIETAS POR USUARIO
+@app.route('/api/getlist/diet', methods=['POST'])
 def getDietList():
     print('Ruta para obtener lista de dietas por usuario')
     if request.method == 'POST':
         data = request.json
         email = data.get('email') 
-        getDietList= db.diet_collection.find({"email" : email})
+        getDiet= db.diet_collection.find({"email" : email})
+        print("getDiet:")
+        print(getDiet)
+        getDietList = list(getDiet)
+        print("getDietList")
         print(getDietList)
         getDocumentsSize = len(list(getDietList))
+        print("getDocumentsSize")
         print(getDocumentsSize)
         if(getDocumentsSize > 0):
             print("Se encontraron dietas para el usuario  " + email)
-            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "data" : getDietList}
+            dataJson = jsonfun.parse_json(getDietList)
+            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "data" : dataJson}
             response = app.response_class(
                 response=json.dumps(responsemessage),
                 status=201,
@@ -175,7 +181,7 @@ def getDietList():
 
 
 
-
+# POST COMENTARIOS
 @app.route('/api/save/comment', methods=['POST'])
 def saveComment():
     if request.method == 'POST':

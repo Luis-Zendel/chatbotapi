@@ -9,12 +9,13 @@ diet_collection = client.nutritionapp.diet_collection
 comment_collection = client.nutritionapp.comment_collection
 
 response = diet_collection.find({"email" : "sa337352@uaeh.edu.mx"})
-print("respuesta: " )
-print( len(list(response)))
-"""
-tam = response.count()
-print("Tamaño = " + tam)
+array = list(response)
+print(array)
 for document in response:
     print(document)
 
-"""
+array = list(response)
+print(array)
+print("respuesta: " )
+print( len(list(response)))
+print(response)
