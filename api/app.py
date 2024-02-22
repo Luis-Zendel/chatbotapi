@@ -24,7 +24,7 @@ from datetime import datetime
 KEY = os.getenv('URL_OPENAI_KEY')
 context = {"role": "system","content": "Eres un asistente muy útil."}
 messages = [context]
-clientOpenAI = OpenAI(api_key= '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') 
+clientOpenAI = OpenAI(api_key= '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') 
 
 
 def create_app(enviroment):
@@ -132,15 +132,49 @@ def generateDiet():
                 status=200,
                 mimetype='application/json'
             )
+            fecha_actual = datetime.now()
+            fecha_string = fecha_actual.strftime("%d-%m-%Y")
             infoAlmacenar = {
                 'email': email,
                 'diet': response_diet,
-                'date': 'test',
+                'date': fecha_string,
                 'prompt': prompt,
             }
             db.diet_collection.insert_one(infoAlmacenar).inserted_id
 
             return response
+
+@app.route('/api/get/diet', methods=['POST'])
+def getDietList():
+    print('Ruta para obtener lista de dietas por usuario')
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('email') 
+        getDietList= db.diet_collection.find({"email" : email})
+        print(getDietList)
+        getDocumentsSize = len(list(getDietList))
+        print(getDocumentsSize)
+        if(getDocumentsSize > 0):
+            print("Se encontraron dietas para el usuario  " + email)
+            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "data" : getDietList}
+            response = app.response_class(
+                response=json.dumps(responsemessage),
+                status=201,
+                mimetype='application/json'
+            )
+            return response
+        else:
+            print("No se encontraron dietas registradas anteriormente" )
+            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "data" : ""}
+            response = app.response_class(
+                response=json.dumps(responsemessage),
+                status=200,
+                mimetype='application/json'
+            )
+            return response
+
+
+
 
 @app.route('/api/save/comment', methods=['POST'])
 def saveComment():
@@ -173,7 +207,9 @@ def saveComment():
             )
             return response
         
-@app.route('api/get/comment', methods=['POST'])
+
+        
+@app.route('/api/get/comment', methods=['POST'])
 def getComments():
     if request.method == 'POST':
         data = request.json
@@ -190,7 +226,9 @@ def getComments():
                 status=200,
                 mimetype='application/json'
             )
-            return response    
+            return response
+        else:
+            return "No se encontro nada "    
 
             
 

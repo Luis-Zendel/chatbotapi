@@ -8,7 +8,7 @@ user_collection = client.nutritionapp.users
 diet_collection = client.nutritionapp.diet_collection
 comment_collection = client.nutritionapp.comment_collection
 
-response = diet_collection.find({"email" : "sa337352@uaeh.edu.m"})
+response = diet_collection.find({"email" : "sa337352@uaeh.edu.mx"})
 print("respuesta: " )
 print( len(list(response)))
 """
