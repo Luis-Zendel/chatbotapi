@@ -11,7 +11,7 @@ import os
 from config import config
 from datetime import datetime
 import jsonfun
-
+from routes.comment import comment_bp
 """
 -Definir rutas de usarios 
 -Funcionalidad de crud 
@@ -28,6 +28,7 @@ clientOpenAI = OpenAI(api_key= 'sk-5nbo32t8bnszmYYgrxQwT3BlbkFJrJKpcpmaxCRsTqSLH
 
 def create_app(enviroment):
     app = Flask(__name__)
+    app.register_blueprint(comment_bp, url_prefix='/comments' )
     CORS(app)
     app.config.from_object(enviroment)
     return app
@@ -162,7 +163,7 @@ def getDietList():
         if(getDocumentsSize > 0):
             print("Se encontraron dietas para el usuario  " + email)
             dataJson = jsonfun.parse_json(getDietList)
-            responsemessage = {"message": "No fue posible almacenar su comentario por favor intente más tarde", "data" : dataJson}
+            responsemessage = {"message": "Se encontrarón las siguientes dietas", "data" : dataJson}
             response = app.response_class(
                 response=json.dumps(responsemessage),
                 status=201,
@@ -203,9 +204,10 @@ def saveComment():
         else: 
             print("Proceso para almacenar documento ")
             comment = data.get('comment')
+            print(comment)
             responsemessage = {"message": "Recibimos su comentario, muchas gracias por escribirnos", "response" : ""}
             documentToInsert = {"email": email, "comment": comment}
-            db.comment_collection.insert_one({documentToInsert}).inserted_id
+            db.comment_collection.insert_one(documentToInsert).inserted_id
             response = app.response_class(
                 response=json.dumps(responsemessage),
                 status=201,
