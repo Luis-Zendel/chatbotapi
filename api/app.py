@@ -21,10 +21,13 @@ from routes.comment import comment_bp
 -Consultar información de usuario para inciio de sesión 
 
 """
-KEY = os.getenv('OPENAI_KEY')
+load_dotenv()
+variable = os.environ.get('OPENAI_KEY')
 context = {"role": "system","content": "Eres un asistente muy útil."}
+print("KEY ===== ")
+print(variable)
 messages = [context]
-clientOpenAI = OpenAI(api_key= KEY) 
+clientOpenAI = OpenAI(api_key= variable) 
 
 def create_app(enviroment):
     app = Flask(__name__)
