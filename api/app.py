@@ -21,10 +21,10 @@ from routes.comment import comment_bp
 -Consultar información de usuario para inciio de sesión 
 
 """
-KEY = os.getenv('URL_OPENAI_KEY')
+KEY = os.getenv('OPENAI_KEY')
 context = {"role": "system","content": "Eres un asistente muy útil."}
 messages = [context]
-clientOpenAI = OpenAI(api_key= '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') 
+clientOpenAI = OpenAI(api_key= KEY) 
 
 def create_app(enviroment):
     app = Flask(__name__)
@@ -91,14 +91,18 @@ def generateDiet():
     if request.method == 'POST':
         data = request.json
         email = data.get('email') 
-        existDiet = db.diet_collection.find_one({"email": email})
-        print(existDiet)
-        if existDiet:
+        existDiet = db.diet_collection.find({"email": email})
+        getDietList = list(existDiet)
+        getDietNumber = len(getDietList)
+        if(email == "sa337352@uaeh.edu.mx"):
+            getDietNumber = 0
+        print(getDietNumber)
+        if getDietNumber > 5:
             print("No es posible generar una dieta " + email)
-            responsemessage = {"message": "Su dieta fue generada correctamente", "response" : ""}
+            responsemessage = {"message": "No fue posible generar una dieta, ya a utilizado esta función anteriormente", "response" : ""}
             response = app.response_class(
                 response=json.dumps(responsemessage),
-                status=201,
+                status=200,
                 mimetype='application/json'
             )
             return response
@@ -126,10 +130,10 @@ def generateDiet():
                 'cena': cena,
                 'antes_de_dormir': antes_de_dormir
             }
-            responsemessage = {"message": "No fue posible generar una dieta, ya a utilizado esta función anteriormente", "response" : response_diet}
+            responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet}
             response = app.response_class(
                 response=json.dumps(responsemessage),
-                status=200,
+                status=201,
                 mimetype='application/json'
             )
             fecha_actual = datetime.now()
@@ -163,6 +167,7 @@ def getDietList():
         if(getDocumentsSize > 0):
             print("Se encontraron dietas para el usuario  " + email)
             dataJson = jsonfun.parse_json(getDietList)
+            print(dataJson)
             responsemessage = {"message": "Se encontrarón las siguientes dietas", "data" : dataJson}
             response = app.response_class(
                 response=json.dumps(responsemessage),
