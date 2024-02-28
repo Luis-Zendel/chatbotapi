@@ -1,0 +1,7 @@
+Flask
+pymongo
+Flask-PyMongo
+python-dotenv
+openai
+Flask-Cors
+cors
