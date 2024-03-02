@@ -114,6 +114,8 @@ def generateDiet():
         else:
             print("Se va generar una dieta")
             prompt = data.get('prompt')
+            print("Prompt")
+            print(prompt)
             messages.append({"role": "user", "content": prompt})
             response = clientOpenAI.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
             response_content = response.choices[0].message.content
@@ -134,22 +136,39 @@ def generateDiet():
                 'antes_de_dormir': antes_de_dormir
             }
             responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet}
+            print(responsemessage)
             response = app.response_class(
                 response=json.dumps(responsemessage),
                 status=201,
                 mimetype='application/json'
             )
-            fecha_actual = datetime.now()
-            fecha_string = fecha_actual.strftime("%d-%m-%Y")
-            infoAlmacenar = {
-                'email': email,
-                'diet': response_diet,
-                'date': fecha_string,
-                'prompt': prompt,
-            }
-            db.diet_collection.insert_one(infoAlmacenar).inserted_id
-
             return response
+        
+@app.route('/api/post/save/diet/user', methods=['POST'])
+def saveDiet():
+    print("Ruta para alamacenar dieta generada")
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('email')
+        diet = data.get('diet')
+        prompt = data.get('prompt')
+        name = data.get('name')
+        fecha_actual = datetime.now()
+        fecha_string = fecha_actual.strftime("%d-%m-%Y")
+        print("Se extrajeron los datos")
+        documentToInsert = {"email": email, "diet": diet, "name": name, "prompt": prompt, "date": fecha_string}
+        print(documentToInsert)
+        db.diet_collection.insert_one(documentToInsert).inserted_id
+        responsemessage = {"message": "Se guardo correctamente su dieta, puede consultarla más tarde si desea"}
+        response = app.response_class(
+            response=json.dumps(responsemessage),
+            status=201,
+            mimetype='application/json'
+        )
+        return response
+
+
+
 
 #GET DIETAS POR USUARIO
 @app.route('/api/getlist/diet', methods=['POST'])
