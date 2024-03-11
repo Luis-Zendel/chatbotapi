@@ -231,9 +231,10 @@ def saveComment():
         else: 
             print("Proceso para almacenar documento ")
             comment = data.get('comment')
+            title = data.get('title')
             print(comment)
             responsemessage = {"message": "Recibimos su comentario, muchas gracias por escribirnos", "response" : ""}
-            documentToInsert = {"email": email, "comment": comment}
+            documentToInsert = {"email": email, "title": title, "comment": comment}
             db.comment_collection.insert_one(documentToInsert).inserted_id
             response = app.response_class(
                 response=json.dumps(responsemessage),
@@ -263,7 +264,7 @@ def getComments():
             )
             return response
         else:
-            return "No se encontro nada "    
+            return "No se encontro nada "
 
             
 
