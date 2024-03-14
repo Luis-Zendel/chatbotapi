@@ -91,8 +91,11 @@ def separar_horario(plan_alimenticio, horario, siguiente_horario):
     if siguiente_horario != "":
         contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
     else:
-        
-        contenido_horario = plan_alimenticio[inicio_contenido:].strip()
+        div = plan_alimenticio[inicio_contenido:].strip()
+        partes = div.split('\n\n', 1)
+        contenido_horario = partes[0]
+
+
 
     return contenido_horario
 
@@ -117,6 +120,28 @@ print("\nCena:\n", cena)
 print("______________________________-")
 print("\nAntes de dormir:\n", antes_de_dormir)
 print("______________________________-")
+# Texto completo
+texto_completo = """1. Opción 1: Té de manzanilla o infusión relajante sin azúcar.
+2. Opción 2: Un vaso de leche tibia con canela.
+3. Opción 3: Puñado de almendras y nueces como snack nocturno.
+
+Espero que este plan de dieta te sea de utilidad en tu objetivo de perder peso y mantener tu energía a lo largo del día. Recuerda que es 
+importante mantener un equilibrio en tus comidas y adaptar las porciones a tus necesidades calóricas. ¡Si tienes alguna otra pregunta no dudes 
+en contactarme! ¡Mucho éxito en tu camino hacia una vida más saludable!."""
+
+# Utilizamos split() para dividir el texto en dos partes usando el primer doble salto de línea como separador
+partes = texto_completo.split('\n\n', 1)
+
+# Asignamos las partes a variables separadas
+opciones = partes[0]  # Parte con las opciones
+mensaje_final = partes[1]  # Resto del texto
+
+# Imprimir las variables para verificar
+print("Opciones:")
+print(opciones)
+print("\nMensaje Final:")
+print(mensaje_final)
+
 
 
 

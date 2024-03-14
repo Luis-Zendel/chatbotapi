@@ -17,6 +17,8 @@ def separar_horario(plan_alimenticio, horario, siguiente_horario):
     if siguiente_horario != "":
         contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
     else:
-        contenido_horario = plan_alimenticio[inicio_contenido:].strip()
+        div = plan_alimenticio[inicio_contenido:].strip()
+        partes = div.split('\n\n', 1)
+        contenido_horario = partes[0]
 
     return contenido_horario
