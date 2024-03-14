@@ -34,6 +34,44 @@ naturales.
 
 Siempre es recomendable consultar a un profesional de la salud o un dietista antes de hacer cambios drásticos en tu dieta"""
 
+var2 = """
+>  ¡Hola Yesenia! Claro que sí, puedo ayudarte a elaborar un plan de dieta personalizado para ayudarte a perder peso y mantener tu energía a lo 
+largo del día. A continuación te presento un ejemplo de plan de alimentación en el formato solicitado:
+
+**Desayuno:**
+1. Opción 1: Tazón de yogur natural con frutas frescas y granola.
+2. Opción 2: Omelette de claras de huevo con espinacas, champiñones y tomate.
+3. Opción 3: Batido de proteínas con plátano, espinacas y almendra.
+
+**Media Mañana:**
+1. Opción 1: Puñado de frutos secos (nueces, almendras, pistachos).
+2. Opción 2: Batido de proteínas con leche de almendra y una cucharada de crema de cacahuate.
+3. Opción 3: Rodajas de manzana con mantequilla de almendra.
+
+**Almuerzo:**
+1. Opción 1: Pechuga de pollo a la parrilla con ensalada de quinoa, aguacate y tomate.
+2. Opción 2: Salmón al horno con brócoli al vapor y batata asada.
+3. Opción 3: Tacos de tinga de pollo en tortillas de maíz con guacamole y ensalada de col.
+
+**Media Tarde:**
+1. Opción 1: Zanahorias baby con hummus.
+2. Opción 2: Yogur griego natural con bayas frescas y semillas de chía.
+3. Opción 3: Smoothie de espinacas, piña y jengibre.
+
+**Cena:**
+1. Opción 1: Ensalada de garbanzos con tomate, pepino, pimiento y vinagreta de limón.
+2. Opción 2: Filete de pescado al horno con espárragos a la parrilla y quinoa.
+3. Opción 3: Pollo al curry con leche de coco, verduras al wok y arroz integral.
+
+**Antes de Dormir:**
+1. Opción 1: Té de manzanilla o infusión relajante sin azúcar.
+2. Opción 2: Un vaso de leche tibia con canela.
+3. Opción 3: Puñado de almendras y nueces como snack nocturno.
+
+Espero que este plan de dieta te sea de utilidad en tu objetivo de perder peso y mantener tu energía a lo largo del día. Recuerda que es 
+importante mantener un equilibrio en tus comidas y adaptar las porciones a tus necesidades calóricas. ¡Si tienes alguna otra pregunta no dudes 
+en contactarme! ¡Mucho éxito en tu camino hacia una vida más saludable!"""
+
 def separar_horario(plan_alimenticio, horario, siguiente_horario):
     # Encontrar el índice del horario en el plan alimenticio
     indice_horario = plan_alimenticio.find(horario)
@@ -53,17 +91,18 @@ def separar_horario(plan_alimenticio, horario, siguiente_horario):
     if siguiente_horario != "":
         contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
     else:
+        
         contenido_horario = plan_alimenticio[inicio_contenido:].strip()
 
     return contenido_horario
 
 # Ejemplos de cómo utilizar la función
-desayuno = separar_horario(var, "Desayuno:", "Media mañana:")
-media_manana = separar_horario(var, "Media mañana:",  "Almuerzo:")
-almuerzo = separar_horario(var, "Almuerzo:", "Media tarde:")
-media_tarde = separar_horario(var, "Media tarde:",  "Cena:")
-cena = separar_horario(var, "Cena:", "Antes de dormir:")
-antes_de_dormir = separar_horario(var, "Antes de dormir:", "")
+desayuno = separar_horario(var2, "**Desayuno:**", "**Media Mañana:**")
+media_manana = separar_horario(var2, "**Media Mañana:**",  "**Almuerzo:**")
+almuerzo = separar_horario(var2, "**Almuerzo:**", "**Media Tarde:**")
+media_tarde = separar_horario(var2, "**Media Tarde:**",  "**Cena:**")
+cena = separar_horario(var2, "**Cena:**", "**Antes de Dormir:**")
+antes_de_dormir = separar_horario(var2, "**Antes de Dormir:**", "Espero")
 
 # Imprimir los resultados
 print("Desayuno:\n", desayuno)

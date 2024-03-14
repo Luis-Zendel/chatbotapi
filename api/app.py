@@ -121,12 +121,12 @@ def generateDiet():
             response_content = response.choices[0].message.content
             messages.append({"role": "assistant", "content": response_content})
             print(f"[bold green]> [/bold green] [green]{response_content}[/green]")
-            desayuno = algorithm.separar_horario(response_content, "Desayuno:", "Media mañana:")
-            media_manana = algorithm.separar_horario(response_content, "Media mañana:",  "Almuerzo:")
-            almuerzo = algorithm.separar_horario(response_content, "Almuerzo:", "Media tarde:")
-            media_tarde = algorithm.separar_horario(response_content, "Media tarde:",  "Cena:")
-            cena = algorithm.separar_horario(response_content, "Cena:", "Antes de dormir:")
-            antes_de_dormir = algorithm.separar_horario(response_content, "Antes de dormir:", "")
+            desayuno = separar_horario(var2, "**Desayuno:**", "**Media Mañana:**")
+            media_manana = separar_horario(var2, "**Media Mañana:**",  "**Almuerzo:**")
+            almuerzo = separar_horario(var2, "**Almuerzo:**", "**Media Tarde:**")
+            media_tarde = separar_horario(var2, "**Media Tarde:**",  "**Cena:**")
+            cena = separar_horario(var2, "**Cena:**", "**Antes de Dormir:**")
+            antes_de_dormir = separar_horario(var2, "**Antes de Dormir:**", "Espero")
             response_diet = {
                 'desayuno': desayuno,
                 'media_manana': media_manana,

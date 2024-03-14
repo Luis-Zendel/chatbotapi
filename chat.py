@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # Load the dotenv file
 load_dotenv()
-KEY = os.getenv('URL_OPENAI_KEY')
+KEY = os.getenv('OPENAI_KEY')
 
 
 client = OpenAI(api_key=KEY)  # pip install openai
