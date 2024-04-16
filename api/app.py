@@ -12,6 +12,7 @@ from config import config
 from datetime import datetime
 import jsonfun
 from routes.comment import comment_bp
+import re
 """
 -Definir rutas de usarios 
 -Funcionalidad de crud 
@@ -120,22 +121,10 @@ def generateDiet():
             response = clientOpenAI.chat.completions.create(model="gpt-3.5-turbo", messages=messages)
             response_content = response.choices[0].message.content
             messages.append({"role": "assistant", "content": response_content})
-            print(f"[bold green]> [/bold green] [green]{response_content}[/green]")
-            desayuno = algorithm.separar_horario(response_content, "**Desayuno:**", "**Media Mañana:**")
-            media_manana = algorithm.separar_horario(response_content, "**Media Mañana:**",  "**Almuerzo:**")
-            almuerzo = algorithm.separar_horario(response_content, "**Almuerzo:**", "**Media Tarde:**")
-            media_tarde = algorithm.separar_horario(response_content, "**Media Tarde:**",  "**Cena:**")
-            cena = algorithm.separar_horario(response_content, "**Cena:**", "**Antes de Dormir:**")
-            antes_de_dormir = algorithm.separar_horario(response_content, "**Antes de Dormir:**", "Espero")
-            response_diet = {
-                'desayuno': desayuno,
-                'media_manana': media_manana,
-                'almuerzo': almuerzo,
-                'media_tarde': media_tarde,
-                'cena': cena,
-                'antes_de_dormir': antes_de_dormir
-            }
-            responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet}
+            print(f"Respuesta: {response_content} | Fin ")
+            response_diet = json.loads(response_content)
+            print(response_diet)
+            responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet, "code": 201}
             print(responsemessage)
             response = app.response_class(
                 response=json.dumps(responsemessage),
