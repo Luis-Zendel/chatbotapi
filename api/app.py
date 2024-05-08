@@ -123,8 +123,9 @@ def generateDiet():
             messages.append({"role": "assistant", "content": response_content})
             print(f"Respuesta: {response_content} | Fin ")
             response_diet = json.loads(response_content)
-            print(response_diet)
-            responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_content, "code": 201}
+
+            print(f"DietJSON: {response_diet} | FIN")
+            responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet, "code": 201}
             print(responsemessage)
             response = app.response_class(
                 response=json.dumps(responsemessage),
