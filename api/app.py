@@ -6,32 +6,27 @@ from flask_cors import CORS
 from openai import OpenAI
 from dotenv import load_dotenv
 import db
-import algorithm
 import os
 from config import config
 from datetime import datetime
 import jsonfun
 from routes.comment import comment_bp
-import re
+from routes.user import user_bp
+import jwt
+from functools import wraps
+from decode import tokenRequired
 """
--Definir rutas de usarios 
--Funcionalidad de crud 
--Crear un nuevo usuario 
--Eliminar usuario
--Actualizar contraseña o datos 
--Consultar información de usuario para inciio de sesión 
 
 """
 load_dotenv()
 variable = os.environ.get('OPENAI_KEY')
 context = {"role": "system","content": "Eres un asistente muy útil."}
-print("KEY ===== ")
-print(variable)
 messages = [context]
 clientOpenAI = OpenAI(api_key= variable) 
 
 def create_app(enviroment):
     app = Flask(__name__)
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.register_blueprint(comment_bp, url_prefix='/comments' )
     CORS(app)
     app.config.from_object(enviroment)
@@ -46,6 +41,9 @@ app = create_app(enviroment)
     Validar que el usuario no existe 
     Crear usuario y contraseña 
 """
+# Decorador para verificar el token JWT
+
+
 @app.route('/api/chatbot/users', methods =['POST'])
 def create_user():
     if request.method == 'POST':
@@ -90,6 +88,7 @@ def test():
     return "Connected to the data base!"
 
 # Ruta de gurdar dieta 
+
 @app.route('/api/generate/diet', methods=['POST'])
 def generateDiet():
     if request.method == 'POST':
@@ -123,7 +122,6 @@ def generateDiet():
             messages.append({"role": "assistant", "content": response_content})
             print(f"Respuesta: {response_content} | Fin ")
             response_diet = json.loads(response_content)
-
             print(f"DietJSON: {response_diet} | FIN")
             responsemessage = {"message": "Su dieta fue generada correctamente ", "data" : response_diet, "code": 201}
             print(responsemessage)

@@ -6,3 +6,5 @@ openai
 Flask-Cors
 cors
 gunicorn
+pyjwt
+wraps
