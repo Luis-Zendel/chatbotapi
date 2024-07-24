@@ -17,7 +17,7 @@ from decode import tokenRequired
 from datetime import date
 from datetime import datetime
 
-user_bp = Blueprint('comments',__name__ )
+user_bp = Blueprint('users',__name__ )
 
 @user_bp.route('/get', methods = ['GET'])
 def obtenerComentarios():

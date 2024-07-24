@@ -1,24 +1,11 @@
-def separar_horario(plan_alimenticio, horario, siguiente_horario):
-    # Encontrar el índice del horario en el plan alimenticio
-    indice_horario = plan_alimenticio.find(horario)
-    print("Se encontro indice horario", indice_horario)
-    # Si el horario no se encuentra, retornar None
-    if indice_horario == -1:
-        return None
+import jwt
+from flask import jsonify
+from functools import wraps 
 
-    # Encontrar el inicio del contenido del horario (línea siguiente al horario)
-    inicio_contenido = plan_alimenticio.find('\n', indice_horario) + 1
+print("Iniciando decodificacion")
 
-    # Encontrar el final del contenido del horario (inicio del siguiente horario o el final de la cadena)
-
-    fin_contenido = plan_alimenticio.find(siguiente_horario) 
-    print("Fin de contenido ", fin_contenido)
-    # Extraer el contenido del horario
-    if siguiente_horario != "":
-        contenido_horario = plan_alimenticio[inicio_contenido:fin_contenido].strip()
-    else:
-        div = plan_alimenticio[inicio_contenido:].strip()
-        partes = div.split('\n\n', 1)
-        contenido_horario = partes[0]
-
-    return contenido_horario
+token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMDk5MjA2MTQzMjIxOTUzMzEyODUiLCJlbWFpbCI6InNhMzM3MzUyQHVhZWguZWR1Lm14IiwiaWF0IjoxNzIxNzc5MTgzLCJleHAiOjE3MjQzNzExODN9.o8GgaxDskhcFWC4Xjh_har9Nzk8zGmomlm1d-dBZIkM"
+secret = "OQaNHui9urkgzSD6TXgi+3MPuhMBpMn3rbt0GPf1whg="
+decoded_token = jwt.decode(token,secret, algorithms=["HS256"])
+print("TOKEN ")
+print(decoded_token)
