@@ -15,7 +15,6 @@ from routes.user import user_bp
 from routes.diets import diet_bp
 import jwt
 from functools import wraps
-from decode import tokenRequired
 """
 
 """

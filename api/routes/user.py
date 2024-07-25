@@ -2,10 +2,6 @@ from flask import Blueprint
 from flask import Flask, render_template, request, redirect
 from flask_pymongo import pymongo
 from flask import jsonify
-import json 
-from flask_cors import CORS
-from openai import OpenAI
-from dotenv import load_dotenv
 import db
 import os
 from config import config
@@ -13,13 +9,14 @@ from datetime import datetime
 import jsonfun
 import jwt
 from functools import wraps
-from decode import tokenRequired
 from datetime import date
 from datetime import datetime
+from decode import token_required
 
 user_bp = Blueprint('users',__name__ )
 
 @user_bp.route('/get', methods = ['GET'])
+@token_required
 def obtenerComentarios():
     return "Hello to user"
 

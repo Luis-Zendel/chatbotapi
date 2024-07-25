@@ -13,12 +13,11 @@ from datetime import datetime
 import jsonfun
 import jwt
 from functools import wraps
-from decode import tokenRequired
 from datetime import date
 from datetime import datetime
+from decode import token_required
 
 diet_bp = Blueprint('diets',__name__ )
-
 ## Open AI configuration 
 load_dotenv()
 variable = os.environ.get('OPENAI_KEY')
@@ -28,11 +27,13 @@ clientOpenAI = OpenAI(api_key= variable)
 openAIModel = "gpt-3.5-turbo"
 
 @diet_bp.route('/get', methods = ['GET'])
+@token_required
 def obtenerComentarios():
     return "Hello to comment"
 
 ## Estrctura esperada 
 @diet_bp.route('/save', methods = ['POST'])
+@token_required
 def saveDiet():
     print("Save Comment => /diets/save")
     if(request.method == 'POST'):
@@ -55,6 +56,7 @@ def saveDiet():
         return jsonify(response_message), 201
 
 @diet_bp.route('/generate', methods=['POST'])
+@token_required
 def generateDiet():
     print("Generate Diet => /diets/generate")
     if request.method == 'POST':

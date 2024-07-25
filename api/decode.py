@@ -1,24 +1,27 @@
+from dotenv import load_dotenv
 import jwt
-from flask import jsonify
-from functools import wraps 
+import os
+from flask import request, jsonify
+from functools import wraps
 
-# Decodificación del JWT
+load_dotenv()
+variable  = os.environ.get('SECRET_KEY')
 
-def tokenRequired(f):
+def token_required(f):
     @wraps(f)
-    def verifyToken(*args, **kwargs):
-        token = ""
-        if 'Authorization' in request.headers:
-            token = request.headers['Authorization'].split()[1]
-        if not token:
-            return jsonify({'message':"Token is missing"}), 403
-
+    def decorated(*args, **kwargs):
+        auth = request.headers.get('Authorization')
+        if not auth:
+            return jsonify({'message': 'Token is missing!'}), 403
+        
         try:
-            decoded_token = jwt.decode(token,secret, algorithms=["HS256"])
+            token_value = request.headers["Authorization"].split(" ")[1]
+            data = jwt.decode(token_value, variable, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            return jsonify({'message':"Token has expired"}), 403
-        except jwt.InvalidTokenError as e:
-            print(f"Token is invalid: {e}")
-            return jsonify({'message':"Token is invalid"}), 403
-        return decoded_token
-
+            return jsonify({'message': 'Token has expired!'}), 403
+        except jwt.InvalidTokenError:
+            return jsonify({'message': 'Invalid token!'}), 403
+        
+        return f(*args, **kwargs)
+    
+    return decorated
