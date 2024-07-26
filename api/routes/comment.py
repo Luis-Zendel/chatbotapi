@@ -15,6 +15,7 @@ import jwt
 from functools import wraps
 from datetime import date
 from datetime import datetime
+from decode import token_required
 
 comment_bp = Blueprint('comments',__name__ )
 
@@ -24,6 +25,7 @@ def obtenerComentarios():
 
 ## Estrctura esperada 
 @comment_bp.route('/save', methods = ['POST'])
+@token_required
 def saveComment():
     print("Save Comment => /comments/save")
     if(request.method == 'POST'):
