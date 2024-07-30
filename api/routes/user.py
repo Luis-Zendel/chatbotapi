@@ -25,18 +25,24 @@ def obtenerComentarios():
 def saveUser():
     print("Save User => /users/save")
     if(request.method == 'POST'):
-        exist_email = db.user_collection({"email": email})
+        data = request.json
+        email = data.get('email') 
+        account = data.get('account')
+        user = data.get('user')
+        print(email , "_-+++++++____")
+        exist_email = db.user_collection.find({"email": email})
         get_email_list = list(exist_email)
         num = len(get_email_list)
+        print(num)
         if num == 0:
             data = request.json
             print(data)
             email= data.get('email')
-            name = data.get('name')
             now_date = datetime.now()
             user_to_save = {
                 "email": email,
-                "name": name,
+                "user": user,
+                "account": account,
                 "date": now_date
             }
             userDB = db.user_collection.insert_one(user_to_save)
